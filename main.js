@@ -87,17 +87,31 @@ function drawPlayer() {
   };
 }
 
-const positionY = Math.floor(Math.random() * numberOfTiles);
-const positionX = Math.floor(Math.random() * numberOfTiles);
+// const positionY = Math.floor(Math.random() * numberOfTiles);
+// const positionX = Math.floor(Math.random() * numberOfTiles);
 
-function drawTreasure(row, col) {
+// Iteration 4
+class Treasure {
+  constructor(col, row) {
+    this.col = col;
+    this.row = row;
+    this.setRandomPosition(); // to set `this.col` and `this.row`
+  }
+  setRandomPosition() {
+    this.col = Math.floor(Math.random() * numberOfTiles);
+    this.row = Math.floor(Math.random() * numberOfTiles);
+  }
+}
+const treasure = new Treasure(0, 0);
+
+function drawTreasure(col, row) {
   const TreasureImg = new Image();
   TreasureImg.src = '/images/treasure.png';
   TreasureImg.onload = () => {
     context.drawImage(
       TreasureImg,
-      positionY * tileSize,
-      positionX * tileSize,
+      treasure.col * tileSize,
+      treasure.row * tileSize,
       50,
       50
     );
@@ -126,13 +140,15 @@ window.addEventListener('keydown', (event) => {
 
   drawEverything();
 
-  if (player.row === positionX) {
-    if (player.col === positionY) {
+  if (player.row === treasure.row) {
+    if (player.col === treasure.col) {
       console.log('Jeej! its the same');
+      treasure.setRandomPosition();
     }
   }
-  console.log(player.row, player.col);
-  console.log(positionX, positionY);
+
+  // console.log(player.row, player.col);
+  // console.log(treasure.row, treasure.col);
 });
 
 function drawEverything() {
